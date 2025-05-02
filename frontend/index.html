@@ -43,96 +43,107 @@
   </header>
 
   <main>
-    <section id="model-config-container" class="card">
-      <div class="config-field">
-        <md-outlined-text-field
-          id="token"
-          label="Access Token"
-          value=""
-          type="password"
-        ></md-outlined-text-field>
-        
-        <md-outlined-text-field
-          id="project"
-          label="Project ID"
-          value=""
-        ></md-outlined-text-field>
-      </div>
+    <div class="left-column">
+      <section id="model-config-container" class="card">
+        <div class="config-field">
+          <md-outlined-text-field
+            id="token"
+            label="Access Token"
+            value=""
+            type="password"
+          ></md-outlined-text-field>
+          
+          <md-outlined-text-field
+            id="project"
+            label="Project ID"
+            value=""
+          ></md-outlined-text-field>
+        </div>
 
-      <div class="modality-container">
-        <p class="md-typescale-headline-small">Model response type</p>
+        <div class="modality-container">
+          <p class="md-typescale-headline-small">Model response type</p>
 
-        <form>
-          <div class="radio-option">
-            <md-radio
-              id="audio-radio"
-              name="responseModality"
-              value="AUDIO"
-              checked="checked"
-            ></md-radio>
-            <label for="audio-radio">
-              <span class="material-symbols-outlined"> volume_up </span>
-              <span class="icon-text">Audio</span>
-            </label>
-          </div>
+          <form>
+            <div class="radio-option">
+              <md-radio
+                id="audio-radio"
+                name="responseModality"
+                value="AUDIO"
+                checked="checked"
+              ></md-radio>
+              <label for="audio-radio">
+                <span class="material-symbols-outlined"> volume_up </span>
+                <span class="icon-text">Audio</span>
+              </label>
+            </div>
 
-          <div class="radio-option">
-            <md-radio
-              id="text-radio"
-              name="responseModality"
-              value="TEXT"
-            ></md-radio>
-            <label for="text-radio">
-              <span class="material-symbols-outlined"> text_fields </span>
-              <span class="icon-text">Text</span>
-            </label>
-          </div>
-        </form>
-      </div>
+            <div class="radio-option">
+              <md-radio
+                id="text-radio"
+                name="responseModality"
+                value="TEXT"
+              ></md-radio>
+              <label for="text-radio">
+                <span class="material-symbols-outlined"> text_fields </span>
+                <span class="icon-text">Text</span>
+              </label>
+            </div>
+          </form>
+        </div>
 
-      <div class="config-field">
-        <md-outlined-text-field
-          id="systemInstructions"
-          type="textarea"
-          label="System Instructions"
-          rows="3"
-        ></md-outlined-text-field>
-      </div>
+        <div class="config-field">
+          <md-outlined-text-field
+            id="systemInstructions"
+            type="textarea"
+            label="System Instructions"
+            rows="2"
+          ></md-outlined-text-field>
+        </div>
 
-      <div class="button-group">
-        <md-filled-tonal-button onclick="connectBtnClick()">
-          <span class="material-symbols-outlined">cloud_sync</span>
-          Connect
-        </md-filled-tonal-button>
-        
-        <md-outlined-button onclick="disconnectBtnClick()">
-          <span class="material-symbols-outlined">cloud_off</span>
-          Disconnect
-        </md-outlined-button>
-      </div>
-    </section>
+        <div class="button-group">
+          <md-filled-tonal-button class="small-button" onclick="connectBtnClick()">
+            <span class="material-symbols-outlined">cloud_sync</span>
+            Connect
+          </md-filled-tonal-button>
+          
+          <md-outlined-button class="small-button" onclick="disconnectBtnClick()">
+            <span class="material-symbols-outlined">cloud_off</span>
+            Disconnect
+          </md-outlined-button>
+        </div>
+      </section>
 
-    <div id="model-state">
-      <div id="disconnected" class="state">
-        <span class="material-symbols-outlined"> cloud_off </span>
-        <span class="icon-text">disconnected</span>
-      </div>
-      <div id="connecting" class="state" hidden>
-        <span class="material-symbols-outlined"> hourglass_empty </span>
-        <span class="icon-text">connecting...</span>
-      </div>
-      <div id="connected" class="state" hidden>
-        <span class="material-symbols-outlined"> cloud_done </span>
-        <span class="icon-text">connected</span>
-      </div>
-      <div id="speaking" class="state" hidden>
-        <span class="material-symbols-outlined"> graphic_eq </span>
-        <span class="icon-text">model speaking</span>
+      <div id="model-state">
+        <div id="disconnected" class="state">
+          <span class="material-symbols-outlined"> cloud_off </span>
+          <span class="icon-text">disconnected</span>
+        </div>
+        <div id="connecting" class="state" hidden>
+          <span class="material-symbols-outlined"> hourglass_empty </span>
+          <span class="icon-text">connecting...</span>
+        </div>
+        <div id="connected" class="state" hidden>
+          <span class="material-symbols-outlined"> cloud_done </span>
+          <span class="icon-text">connected</span>
+        </div>
+        <div id="speaking" class="state" hidden>
+          <span class="material-symbols-outlined"> graphic_eq </span>
+          <span class="icon-text">model speaking</span>
+        </div>
       </div>
     </div>
 
-    <section id="user-input-container" class="card">
-      <div class="input-controls">
+    <div class="middle-column">
+      <div class="video-container card">
+        <h3 class="md-typescale-title-medium control-title">비디오 미리보기</h3>
+        <div id="video-preview">
+          <video id="video" autoplay playsinline muted></video>
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+      
+      <div class="input-controls card">
+        <h3 class="md-typescale-title-medium control-title">입력 설정</h3>
         <div class="select-group">
           <md-outlined-select
             id="cameraSource"
@@ -147,55 +158,52 @@
           ></md-outlined-select>
         </div>
 
+        <h3 class="md-typescale-title-medium control-title">미디어 제어</h3>
         <div class="media-controls">
-          <span id="micBtn">
-            <md-filled-tonal-icon-button onclick="micBtnClick()">
-              <md-icon>mic</md-icon>
-            </md-filled-tonal-icon-button>
-          </span>
+          <div class="control-buttons">
+            <span id="micBtn">
+              <md-filled-tonal-icon-button onclick="micBtnClick()" aria-label="Microphone on">
+                <md-icon>mic</md-icon>
+              </md-filled-tonal-icon-button>
+            </span>
 
-          <span id="micOffBtn" hidden>
-            <md-filled-tonal-icon-button onclick="micOffBtnClick()">
-              <md-icon>mic_off</md-icon>
-            </md-filled-tonal-icon-button>
-          </span>
+            <span id="micOffBtn" hidden>
+              <md-filled-tonal-icon-button onclick="micOffBtnClick()" aria-label="Microphone off">
+                <md-icon>mic_off</md-icon>
+              </md-filled-tonal-icon-button>
+            </span>
 
-          <span id="cameraBtn">
-            <md-filled-tonal-icon-button onclick="cameraBtnClick()">
-              <md-icon>videocam</md-icon>
-            </md-filled-tonal-icon-button>
-          </span>
+            <span id="cameraBtn">
+              <md-filled-tonal-icon-button onclick="cameraBtnClick()" aria-label="Camera">
+                <md-icon>videocam</md-icon>
+              </md-filled-tonal-icon-button>
+            </span>
 
-          <span id="screenBtn">
-            <md-filled-tonal-icon-button onclick="screenShareBtnClick()">
-              <md-icon>present_to_all</md-icon>
-            </md-filled-tonal-icon-button>
-          </span>
+            <span id="screenBtn">
+              <md-filled-tonal-icon-button onclick="screenShareBtnClick()" aria-label="Screen share">
+                <md-icon>present_to_all</md-icon>
+              </md-filled-tonal-icon-button>
+            </span>
+          </div>
         </div>
       </div>
-
-      <div class="video-container">
-        <div id="video-preview" class="card">
-          <video id="video" autoplay playsinline muted></video>
-          <canvas id="canvas"></canvas>
-        </div>
-      </div>
+    </div>
+    
+    <div class="chat-container card">
+      <h3 class="md-typescale-title-medium control-title">대화</h3>
+      <div id="text-chat" class="messages-container"></div>
       
-      <div class="chat-container">
-        <div id="text-chat" class="messages-container"></div>
-        
-        <div class="message-input">
-          <md-outlined-text-field
-            id="text-message"
-            label="Text Message"
-            value=""
-          ></md-outlined-text-field>
-          <md-filled-icon-button onclick="newUserMessage()">
-            <md-icon>send</md-icon>
-          </md-filled-icon-button>
-        </div>
+      <div class="message-input">
+        <md-outlined-text-field
+          id="text-message"
+          label="Text Message"
+          value=""
+        ></md-outlined-text-field>
+        <md-filled-icon-button onclick="newUserMessage()" aria-label="Send message">
+          <md-icon>send</md-icon>
+        </md-filled-icon-button>
       </div>
-    </section>
+    </div>
   </main>
 
   <md-dialog id="dialog" close>

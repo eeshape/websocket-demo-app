@@ -213,17 +213,29 @@ function showDialogWithMessage(messageText) {
 }
 
 async function getAvailableDevices(deviceType) {
-    const allDevices = await navigator.mediaDevices.enumerateDevices();
-    const devices = [];
-    allDevices.forEach((device) => {
-        if (device.kind === deviceType) {
-            devices.push({
-                id: device.deviceId,
-                name: device.label || device.deviceId,
-            });
+    try {
+        // 기기 액세스 권한을 얻기 위해 먼저 미디어를 요청
+        if (deviceType === "videoinput") {
+            await navigator.mediaDevices.getUserMedia({ video: true });
+        } else if (deviceType === "audioinput") {
+            await navigator.mediaDevices.getUserMedia({ audio: true });
         }
-    });
-    return devices;
+        
+        const allDevices = await navigator.mediaDevices.enumerateDevices();
+        const devices = [];
+        allDevices.forEach((device) => {
+            if (device.kind === deviceType) {
+                devices.push({
+                    id: device.deviceId,
+                    name: device.label || `${deviceType} ${devices.length + 1}`,
+                });
+            }
+        });
+        return devices;
+    } catch (error) {
+        console.error(`Error getting ${deviceType} devices:`, error);
+        return [{ id: '', name: `기본 ${deviceType === 'videoinput' ? '카메라' : '마이크'}` }];
+    }
 }
 
 async function getAvailableCameras() {
@@ -249,15 +261,59 @@ function setMaterialSelect(allOptions, selectElement) {
 }
 
 async function setAvailableCamerasOptions() {
-    const cameras = await getAvailableCameras();
-    const videoSelect = document.getElementById("cameraSource");
-    setMaterialSelect(cameras, videoSelect);
+    try {
+        const cameras = await getAvailableCameras();
+        const videoSelect = document.getElementById("cameraSource");
+        
+        // 기존 옵션 제거
+        while (videoSelect.firstChild) {
+            videoSelect.removeChild(videoSelect.firstChild);
+        }
+        
+        if (cameras.length > 0) {
+            setMaterialSelect(cameras, videoSelect);
+        } else {
+            const option = document.createElement("md-select-option");
+            option.value = "";
+            
+            const slotDiv = document.createElement("div");
+            slotDiv.slot = "headline";
+            slotDiv.innerHTML = "사용 가능한 카메라 없음";
+            option.appendChild(slotDiv);
+            
+            videoSelect.appendChild(option);
+        }
+    } catch (error) {
+        console.error("Error setting camera options:", error);
+    }
 }
 
 async function setAvailableMicrophoneOptions() {
-    const mics = await getAvailableAudioInputs();
-    const audioSelect = document.getElementById("audioSource");
-    setMaterialSelect(mics, audioSelect);
+    try {
+        const mics = await getAvailableAudioInputs();
+        const audioSelect = document.getElementById("audioSource");
+        
+        // 기존 옵션 제거
+        while (audioSelect.firstChild) {
+            audioSelect.removeChild(audioSelect.firstChild);
+        }
+        
+        if (mics.length > 0) {
+            setMaterialSelect(mics, audioSelect);
+        } else {
+            const option = document.createElement("md-select-option");
+            option.value = "";
+            
+            const slotDiv = document.createElement("div");
+            slotDiv.slot = "headline";
+            slotDiv.innerHTML = "사용 가능한 마이크 없음";
+            option.appendChild(slotDiv);
+            
+            audioSelect.appendChild(option);
+        }
+    } catch (error) {
+        console.error("Error setting microphone options:", error);
+    }
 }
 
 function setAppStatus(status) {
